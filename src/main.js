@@ -12,6 +12,10 @@ import {
   Swipe,
   SwipeItem,
   SwipeCell,
+  Tab,
+  Tabs,
+  List,
+  PullRefresh,
 } from "vant";
 import { createRouter, createWebHashHistory } from "vue-router";
 
@@ -20,7 +24,22 @@ const router = createRouter({
   routes,
 });
 
-createApp(App)
+const app = createApp(App);
+// 全局过滤器
+app.config.globalProperties.$filters = {
+  prefix(url) {
+    if (url && url.startsWith("http")) {
+      return url;
+    } else {
+      url = `http://backend-api-01.newbee.ltd${url}`;
+      return url;
+    }
+  },
+};
+
+app
+  .use(PullRefresh)
+  .use(List)
   .use(Swipe)
   .use(SwipeItem)
   .use(SwipeCell)
@@ -30,6 +49,8 @@ createApp(App)
   .use(Field)
   .use(Toast)
   .use(router)
+  .use(Tab)
+  .use(Tabs)
   .mount("#app");
 
 window.vRouter = router;

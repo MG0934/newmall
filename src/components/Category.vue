@@ -13,19 +13,58 @@
       </div>
       <i class="nbicon nbmore"></i>
     </header>
-  </div>
-  <div class="search-wrap" ref="searchWrap">
-    <ListScroll :scroll-data="categoryData" class="nav-side-wrapper">
-      <ul class="nav-side">
-        <li
-          v-for="item in categoryData"
-          :key="item.categoryId"
-          v-text="item.categoryName"
-          :class="{ active: currentIndex == item.categoryId }"
-          @click="selectMenu(item.categoryId)"
-        ></li>
-      </ul>
-    </ListScroll>
+    <div class="search-wrap" ref="searchWrap">
+      <ListScroll :scroll-data="categoryData" class="nav-side-wrapper">
+        <ul class="nav-side">
+          <li
+            v-for="item in categoryData"
+            :key="item.categoryId"
+            v-text="item.categoryName"
+            :class="{ active: currentIndex == item.categoryId }"
+            @click="selectMenu(item.categoryId)"
+          ></li>
+        </ul>
+      </ListScroll>
+      <div class="search-content">
+        <ListScroll :scroll-data="categoryData">
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <template v-for="(category, index) in categoryData">
+                <div
+                  class="swiper-slide"
+                  v-if="currentIndex == category.categoryId"
+                  :key="index"
+                >
+                  <!-- <img class="category-main-img" :src="category.mainImgUrl" v-if="category.mainImgUrl"/> -->
+                  <div
+                    class="category-list"
+                    v-for="(products, index) in category.secondLevelCategoryVOS"
+                    :key="index"
+                  >
+                    <p class="catogory-title">{{ products.categoryName }}</p>
+                    <div
+                      class="product-item"
+                      v-for="(product, index) in products.thirdLevelCategoryVOS"
+                      :key="index"
+                      @click="selectProduct(product)"
+                    >
+                      <img
+                        src="//s.weituibao.com/1583591077131/%E5%88%86%E7%B1%BB.png"
+                        class="product-img"
+                      />
+                      <p
+                        v-text="product.categoryName"
+                        class="product-title"
+                      ></p>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </ListScroll>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,7 +104,7 @@ export default {
       console.log(data);
     });
 
-    return { ...toRefs(state), searchWrap };
+    return { ...toRefs(state), searchWrap,selectMenu };
   },
 };
 </script>
